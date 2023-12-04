@@ -111,6 +111,89 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="row">
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card" style="height: 500px !important;overflow:scroll">
+                    <div class="card-body">
+                        <div class="item" style="position: sticky; top:10px;background-color:white">
+                            <h4 class="card-title">Subscriptions</h4>
+                            <p class="card-description"> <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop2">Add Subscription</button>
+                            </p>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                  
+                                    <tr>
+                                        <th>Subcription</th>
+                                       
+                                        <th>Action</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in Sub_type  %}
+                                      
+                                    <tr>
+                                        <td>{{i.Type}}</td>
+                                        <td>
+                                            <a href="{%url 'SubScriptionType_Delete' i.id %}" class="btn btn-inverse-danger btn-icon"><i class="mdi mdi-delete"
+                                                    style="font-size: 25px;"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card" style="height: 500px !important;overflow:scroll">
+                    <div class="card-body">
+                        <div class="item" style="position: sticky; top:10px;background-color:white">
+                            <h4 class="card-title">Subscription Period</h4>
+                            <p class="card-description"><button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop">Add Subscription Period</button>
+                            </p>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table">
+                                <thead>
+                                    <tr>
+                                        <th>SubScription Period</th>
+                                        
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for j in speriod %}
+                                      
+                                    <tr>
+                                        <td>{{j.Period}} {{j.Category}}</td>
+                                        <td>
+                                            <a href="{%url 'SubScriptionPeriod_Delete' j.id %}" class="btn btn-inverse-danger btn-icon"><i class="mdi mdi-delete"
+                                                style="font-size: 25px;"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
 
     <!-- model strat -->
@@ -197,6 +280,50 @@
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+
+     <!-- Modal 3-->
+     <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add Subscription Period</h5>
+                    <button type="button" class="btn btn-close mdi mdi-close text-xxl" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    </p>
+                                    <form class="forms-sample" action="{%url 'SubscriptionTypeSave' %}" method="post">
+                                        {% csrf_token %}
+
+                                        {% for field in typesub_form  %}
+
+                                        <div class="form-group">
+                                            <label for="exampleInputUsername1">{{field.label}}</label>
+                                            {{field}}
+                                        </div>
+                                        {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                </div>
+                </form>
+
             </div>
         </div>
     </div>

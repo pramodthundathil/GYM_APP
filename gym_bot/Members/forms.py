@@ -1,5 +1,5 @@
 from django.forms import ModelForm, TextInput, Textarea, FileInput, Select
-from .models import MemberData, Subscription, Batch_DB, Subscription_Period
+from .models import MemberData, Subscription, Batch_DB, Subscription_Period, TypeSubsription, Payment
 from datetime import datetime
 
 date =  str(datetime.now()).split(" ")[0]
@@ -19,20 +19,22 @@ class MemberAddForm(ModelForm):
             "Photo",
             "Address",
             "Medical_History",
+            "Access_Token_Id"
         ]
 
         widgets = {
             "First_Name":TextInput(attrs={"class":"form-control"}),
             "Last_Name":TextInput(attrs={"class":"form-control"}),
-            "Date_Of_Birth":TextInput(attrs={"class":"form-control","type":"date","min":date}),
+            "Date_Of_Birth":TextInput(attrs={"class":"form-control","type":"date"}),
             "Gender":Select(attrs={"class":"form-control"}),
-            "Date_Of_Birth":TextInput(attrs={"class":"form-control","type":"date","min":date}),
+            # "Date_Of_Birth":TextInput(attrs={"class":"form-control","type":"date","min":date}),
             "Mobile_Number":TextInput(attrs={"class":"form-control","type":"number"}),
             "Email":TextInput(attrs={"class":"form-control","type":"email"}),
-            "Registration_Date":TextInput(attrs={"class":"form-control","type":"date","min":date}),
+            "Registration_Date":TextInput(attrs={"class":"form-control","type":"date"}),
             # "Address":TextInput(attrs={"class":"form-control",'style': 'height: 3em !importent;'}),
             # "Medical_History":TextInput(attrs={"class":"form-control"}),
-            "Photo":FileInput(attrs={"class":"form-control"})
+            "Photo":FileInput(attrs={"class":"form-control"}),
+            "Access_Token_Id":TextInput(attrs={"class":"form-control"})
 
         }
 
@@ -44,6 +46,7 @@ class SubscriptionAddForm(ModelForm):
             "Period_Of_Subscription",
             "Amount",
             "Subscribed_Date",
+            "Subscription_End_Date",
             "Batch",
         ]
 
@@ -52,6 +55,7 @@ class SubscriptionAddForm(ModelForm):
             "Period_Of_Subscription":Select(attrs={"class":"form-control"}),
             "Amount":TextInput(attrs={"class":"form-control","type":"number"}),
             "Subscribed_Date":TextInput(attrs={"class":"form-control","type":"date","min":date}),
+            "Subscription_End_Date":TextInput(attrs={"class":"form-control","type":"date","min":date}),
             "Batch":Select(attrs={"class":"form-control"}),
 
         }
@@ -76,8 +80,24 @@ class Subscription_PeriodForm(ModelForm):
             "Category":Select(attrs={"class":"form-control"}),
         }
 
+class TypeSubsriptionForm(ModelForm):
+    class Meta:
+        model = TypeSubsription
+        fields = ["Type"]
+        widgets = {
+           
+            "Type":TextInput(attrs={"class":"form-control"}),
 
+        }
 
+class PaymentForm(ModelForm):
+    class Meta:
+        model = Payment
+        fields = ["Member", "Payment_Date" ]
 
+        widgets = {
+            "Member":Select(attrs={"class":"form-control"}),
+            "Payment_Date":TextInput(attrs={"class":"form-control","type":"date","min":date}),
+        }
 
 

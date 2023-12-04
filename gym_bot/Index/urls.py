@@ -10,8 +10,8 @@ urlpatterns = [
     path("Batch_Delete/<int:pk>",views.Batch_Delete,name="Batch_Delete"),  
     path("SubscriptionPeriodSave",views.SubscriptionPeriodSave,name="SubscriptionPeriodSave"),
     path("SubScriptionPeriod_Delete/<int:pk>",views.SubScriptionPeriod_Delete,name="SubScriptionPeriod_Delete"),  
-
-
+    path("SubscriptionTypeSave",views.SubscriptionTypeSave,name="SubscriptionTypeSave"),
+    path("SubScriptionType_Delete/<int:pk>",views.SubScriptionType_Delete,name="SubScriptionType_Delete"),  
     
 
 ]

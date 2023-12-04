@@ -12,6 +12,12 @@ class Batch_DB(models.Model):
         return (str(self.Batch_Name) + " " + str(self.Batch_Time))
 
 
+class TypeSubsription(models.Model):
+    Type = models.CharField(max_length=255)
+    def __str__(self):
+        return self.Type
+
+
 
 class Subscription_Period(models.Model):
     Period = models.PositiveIntegerField()
@@ -32,27 +38,35 @@ class MemberData(models.Model):
     Medical_History = models.TextField(max_length=2000,null=True,blank=True)
     Registration_Date = models.DateField(auto_now_add=False)
     Photo = models.FileField(upload_to='member_photo')
+    Date_Added = models.DateField(auto_now_add=True)
     Active_status = models.BooleanField(default=True)
     Access_status = models.BooleanField(default=False)
+    Access_Token_Id = models.CharField(max_length=255,null=True,blank=True)
 
     def __str__(self):
         return self.First_Name + self.Last_Name
 
 class Subscription(models.Model):
     Member = models.ForeignKey(MemberData, on_delete=models.CASCADE,null=True, blank=True)
-    Type_Of_Subscription = models.CharField(max_length=255)
+    Type_Of_Subscription = models.ForeignKey(TypeSubsription,on_delete=models.SET_NULL,null=True,blank=True)
     Period_Of_Subscription = models.ForeignKey(Subscription_Period, on_delete=models.SET_NULL,null=True, blank=True)
     Amount = models.IntegerField()
     Subscribed_Date = models.DateField(auto_now_add=False)
+    Subscription_End_Date = models.DateField(auto_now_add=False,null=True,blank=True)
     Batch = models.ForeignKey(Batch_DB, on_delete=models.SET_NULL,null=True, blank=True)
     Batch_Status = models.BooleanField(default=True)
     Payment_Status = models.BooleanField(default=False)
 
+    def __str__(self):
+        return str(self.Type_Of_Subscription) + " " + str(self.Period_Of_Subscription)
+    
+
 class Payment(models.Model):
     Member = models.ForeignKey(MemberData, on_delete=models.CASCADE)
     Subscription_ID = models.ForeignKey(Subscription, on_delete=models.SET_NULL,null=True,blank=True)
-    Amount = models.IntegerField()
-    Payment_Status = models.BooleanField(default=True)
+    Amount = models.IntegerField(null=True, blank=True)
+    Payment_Date = models.DateField(auto_now_add=False,null=True,blank=True)
+    Payment_Status = models.BooleanField(default=False)
     Access_status = models.BooleanField(default=False)
 
 

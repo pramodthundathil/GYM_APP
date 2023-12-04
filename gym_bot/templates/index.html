@@ -1,4 +1,6 @@
 {% load static %}
+{% static "images" as baseurl %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,14 +14,14 @@
     <link rel="stylesheet" href="{%static 'assets/vendors/font-awesome/css/font-awesome.min.css' %}" />
     <link rel="stylesheet" href="{%static 'assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" />
     <link rel="stylesheet" href="{%static 'assets/css/style.css' %}" />
-    <link rel="shortcut icon" href="{%static 'assets/images/favicon.png' %}" />
+    <link rel="shortcut icon" href="{%static 'assets/images/EF_logo.png' %}" />
   </head>
   <body>
     <div class="container-scroller">
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="text-center sidebar-brand-wrapper d-flex align-items-center">
           <a class="sidebar-brand brand-logo" href="{%url 'Home' %}"><img src="{%static 'assets/images/EF_logo.png' %}" alt="logo" style="object-fit: cover;" /></a>
-          <a class="sidebar-brand brand-logo-mini pl-4 pt-3" href="{%url 'Home' %}"><img src="{%static 'assets/images/logo-mini.svg' %}" alt="logo" /></a>
+          <a class="sidebar-brand brand-logo-mini pl-4 pt-3" href="{%url 'Home' %}"><img src="{%static 'assets/images/EF_logo.png' %}" alt="logo" /></a>
         </div>
         <ul class="nav">
           <li class="nav-item nav-profile">
@@ -55,7 +57,7 @@
             </a>
           </li> -->
           <li class="nav-item">
-            <a class="nav-link" href="pages/icons/mdi.html">
+            <a class="nav-link" href="{%url 'MemberAccess' %}">
               <i class="mdi mdi-arrow-collapse-horizontal menu-icon"></i>
               <span class="menu-title">Member Access</span>
             </a>
@@ -124,37 +126,24 @@
               <li class="nav-item dropdown">
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
                   <i class="mdi mdi-bell-outline"></i>
-                  <span class="count count-varient1">7</span>
+                  <span class="count count-varient1">{{notificationcount}}</span>
                 </a>
                 <div class="dropdown-menu navbar-dropdown navbar-dropdown-large preview-list" aria-labelledby="notificationDropdown">
                   <h6 class="p-3 mb-0">Notifications</h6>
+                  {% for i in notification_payments %}
+                    
                   <a class="dropdown-item preview-item">
                     <div class="preview-thumbnail">
-                      <img src="{%static 'assets/images/faces/face4.jpg' %}" alt="" class="profile-pic" />
+                      <img src="{{i.Member.Photo.url}}" alt="" class="profile-pic" />
                     </div>
                     <div class="preview-item-content">
-                      <p class="mb-0"> Dany Miles <span class="text-small text-muted">commented on your photo</span>
+                      <p class="mb-0">{{i.Member}} <span class="text-small text-muted"><br> Payed AED: {{i.Amount}} On {{i.Payment_Date}}</span>
                       </p>
                     </div>
                   </a>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="{%static 'assets/images/faces/face3.jpg' %}" alt="" class="profile-pic" />
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="mb-0"> James <span class="text-small text-muted">posted a photo on your wall</span>
-                      </p>
-                    </div>
-                  </a>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <img src="{%static 'assets/images/faces/face2.jpg' %}" alt="" class="profile-pic" />
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="mb-0"> Alex <span class="text-small text-muted">just mentioned you in his post</span>
-                      </p>
-                    </div>
-                  </a>
+                  {% endfor %}
+
+                  
                   <div class="dropdown-divider"></div>
                   <p class="p-3 mb-0">View all activities</p>
                 </div>
@@ -257,12 +246,12 @@
                         <div class="d-flex justify-content-between align-items-start">
                           <div class="color-card">
                             <p class="mb-0 color-card-head">Total Fee Collected</p>
-                            <h2 class="text-white"> AED 8,753.<span class="h5">00</span>
+                            <h2 class="text-white"> AED {{collected_amount}}.<span class="h5">00</span>
                             </h2>
                           </div>
                           <i class="card-icon-indicator mdi mdi-basket bg-inverse-icon-warning"></i>
                         </div>
-                        <h6 class="text-white">Month of November</h6>
+                        <h6 class="text-white">Month of {{month}}</h6>
                       </div>
                     </div>
                   </div>
@@ -277,7 +266,7 @@
                           </div>
                           <i class="card-icon-indicator mdi mdi-cube-outline bg-inverse-icon-danger"></i>
                         </div>
-                        <h6 class="text-white">Month of November</h6>
+                        <h6 class="text-white">Month of {{month}}</h6>
                       </div>
                     </div>
                   </div>
@@ -287,11 +276,11 @@
                         <div class="d-flex justify-content-between align-items-start">
                           <div class="color-card">
                             <p class="mb-0 color-card-head">Total Members</p>
-                            <h2 class="text-white">2368</h2>
+                            <h2 class="text-white">{{membercount}}</h2>
                           </div>
                           <i class="card-icon-indicator mdi mdi-account-circle bg-inverse-icon-success"></i>
                         </div>
-                        <h6 class="text-white">Month of November</h6>
+                        <h6 class="text-white">Month of {{month}}</h6>
                       </div>
                     </div>
                   </div>
@@ -301,12 +290,12 @@
                         <div class="d-flex justify-content-between align-items-start">
                           <div class="color-card">
                             <p class="mb-0 color-card-head">Fee Pending Members</p>
-                            <h2 class="text-white"> 1753<span class="h5"></span>
+                            <h2 class="text-white"> {{feepending}}<span class="h5"></span>
                             </h2>
                           </div>
                           <i class="card-icon-indicator mdi mdi-briefcase-outline bg-inverse-icon-primary"></i>
                         </div>
-                        <h6 class="text-white">Month of November</h6>
+                        <h6 class="text-white">Month of {{month}}</h6>
                       </div>
                     </div>
                   </div>
@@ -314,105 +303,59 @@
                 </div>
               </div>
               <div class="col-xl-9 col-sm-6 grid-margin stretch-card">
-                <div class="card">
+                <div class="card" style="max-height: 700px;">
                   <div class="card-body px-0 overflow-auto">
                     <h4 class="card-title pl-4">Members</h4>
                     <div class="table-responsive">
                       <table class="table">
                         <thead class="bg-light">
                           <tr>
-                            <th>Customer</th>
-                            <th>Project</th>
-                            <th>Invoice</th>
-                            <th>Amount</th>
+                            <th>Member</th>
+                            <th>Subscrption Type</th>
+                            <th>Subscrption End Date</th>
+                            <th>Status</th>
+                            <th>View</th>
                           </tr>
                         </thead>
                         <tbody>
+                          {% for sub in subscribers  %}  
                           <tr>
                             <td>
                               <div class="d-flex align-items-center">
-                                <img src="{%static 'assets/images/faces/face1.jpg' %}" alt="image" />
+                                <img src="{{sub.Member.Photo.url}}" alt="image" />
                                 <div class="table-user-name ml-3">
-                                  <p class="mb-0 font-weight-medium"> Cecelia Cooper </p>
-                                  <small> Payment on hold</small>
+                                  <p class="mb-0 font-weight-medium"> {{sub.Member.First_Name}} {{sub.Member.Last_Name}} </p>
+                                  {% if sub.Payment_Status == False %}
+                                  <small class="text-danger"> Payment Not Completed</small>
+                                  {% else %}
+                                  <small> Payment Done</small>
+        
+                                  {% endif %}
                                 </div>
                               </div>
                             </td>
-                            <td>Angular Admin</td>
+                            <td>{{sub.Type_Of_Subscription}}</td>
                             <td>
-                              <div class="badge badge-inverse-success"> Completed </div>
+                              {{sub.Subscription_End_Date}}
                             </td>
-                            <td>$ 77.99</td>
+                            <td>
+                              {% if sub.Payment_Status == False %}
+                              <div class="badge badge-inverse-danger"> Inactive </div>
+                              {% else %}
+                              <div class="badge badge-inverse-success"> Active </div>
+                              {% endif %}
+                            </td>
+                            <td>
+                                <a href="{%url 'MembersSingleView' sub.Member.id %}" class="btn btn-outline-info">View</a>
+                            </td>
                           </tr>
-                          <tr>
-                            <td>
-                              <div class="d-flex align-items-center">
-                                <img src="{%static 'assets/images/faces/face10.jpg' %}" alt="image" />
-                                <div class="table-user-name ml-3">
-                                  <p class="mb-0 font-weight-medium"> Victor Watkins </p>
-                                  <small>Email verified</small>
-                                </div>
-                              </div>
-                            </td>
-                            <td>Angular Admin</td>
-                            <td>
-                              <div class="badge badge-inverse-success"> Completed </div>
-                            </td>
-                            <td>$245.30</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="d-flex align-items-center">
-                                <img src="{%static 'assets/images/faces/face11.jpg' %}" alt="image" />
-                                <div class="table-user-name ml-3">
-                                  <p class="mb-0 font-weight-medium"> Ada Burgess </p>
-                                  <small>Email verified</small>
-                                </div>
-                              </div>
-                            </td>
-                            <td>One page html</td>
-                            <td>
-                              <div class="badge badge-inverse-danger"> Completed </div>
-                            </td>
-                            <td>$ 160.25</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="d-flex align-items-center">
-                                <img src="{%static 'assets/images/faces/face13.jpg' %}" alt="image" />
-                                <div class="table-user-name ml-3">
-                                  <p class="mb-0 font-weight-medium"> Dollie Lynch </p>
-                                  <small>Email verified</small>
-                                </div>
-                              </div>
-                            </td>
-                            <td>Wordpress</td>
-                            <td>
-                              <div class="badge badge-inverse-success"> Declined </div>
-                            </td>
-                            <td>$ 123.21</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div class="d-flex align-items-center">
-                                <img src="{%static 'assets/images/faces/face16.jpg' %}" alt="image" />
-                                <div class="table-user-name ml-3">
-                                  <p class="mb-0 font-weight-medium"> Harry Holloway </p>
-                                  <small>Payment on process</small>
-                                </div>
-                              </div>
-                            </td>
-                            <td>VueJs Application</td>
-                            <td>
-                              <div class="badge badge-inverse-danger"> Declined </div>
-                            </td>
-                            <td>$ 150.00</td>
-                          </tr>
+                          {% endfor %}
+                          
                         </tbody>
                       </table>
                     </div>
                     <a class="text-black mt-3 d-block pl-4" href="#">
-                      <span class="font-weight-medium h6">View all order history</span>
+                      <span class="font-weight-medium h6">View all Members</span>
                       <i class="mdi mdi-chevron-right"></i></a>
                   </div>
                 </div>

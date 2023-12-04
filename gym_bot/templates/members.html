@@ -1,5 +1,7 @@
 {% extends "index.html" %}
 {% load static %}
+{% static "images" as baseurl %}
+
 
 {% block content %}
 
@@ -27,105 +29,59 @@
 
     <div class="row">
       <div class="col-xl-8 col-sm-6 grid-margin stretch-card">
-        <div class="card">
+        <div class="card" style="max-height: 500px;">
           <div class="card-body px-0 overflow-auto">
             <h4 class="card-title pl-4">Members</h4>
             <div class="table-responsive">
               <table class="table">
                 <thead class="bg-light">
                   <tr>
-                    <th>Customer</th>
-                    <th>Project</th>
-                    <th>Invoice</th>
-                    <th>Amount</th>
+                    <th>Member</th>
+                    <th>Subscrption Type</th>
+                    <th>Subscrption End Date</th>
+                    <th>Status</th>
+                    <th>View</th>
                   </tr>
                 </thead>
                 <tbody>
+                  {% for sub in subscribers  %}  
                   <tr>
                     <td>
                       <div class="d-flex align-items-center">
-                        <img src="{%static 'assets/images/faces/face1.jpg' %}" alt="image" />
+                        <img src="{{sub.Member.Photo.url}}" alt="image" />
                         <div class="table-user-name ml-3">
-                          <p class="mb-0 font-weight-medium"> Cecelia Cooper </p>
-                          <small> Payment on hold</small>
+                          <p class="mb-0 font-weight-medium"> {{sub.Member.First_Name}} {{sub.Member.Last_Name}} </p>
+                          {% if sub.Payment_Status == False %}
+                          <small class="text-danger"> Payment Not Completed</small>
+                          {% else %}
+                          <small> Payment Done</small>
+
+                          {% endif %}
                         </div>
                       </div>
                     </td>
-                    <td>Angular Admin</td>
+                    <td>{{sub.Type_Of_Subscription}}</td>
                     <td>
-                      <div class="badge badge-inverse-success"> Completed </div>
+                      {{sub.Subscription_End_Date}}
                     </td>
-                    <td>$ 77.99</td>
+                    <td>
+                      {% if sub.Payment_Status == False %}
+                      <div class="badge badge-inverse-danger"> Inactive </div>
+                      {% else %}
+                      <div class="badge badge-inverse-success"> Active </div>
+                      {% endif %}
+                    </td>
+                    <td>
+                        <a href="{%url 'MembersSingleView' sub.Member.id %}" class="btn btn-outline-info">View</a>
+                    </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <img src="{%static 'assets/images/faces/face10.jpg' %}" alt="image" />
-                        <div class="table-user-name ml-3">
-                          <p class="mb-0 font-weight-medium"> Victor Watkins </p>
-                          <small>Email verified</small>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Angular Admin</td>
-                    <td>
-                      <div class="badge badge-inverse-success"> Completed </div>
-                    </td>
-                    <td>$245.30</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <img src="{%static 'assets/images/faces/face11.jpg' %}" alt="image" />
-                        <div class="table-user-name ml-3">
-                          <p class="mb-0 font-weight-medium"> Ada Burgess </p>
-                          <small>Email verified</small>
-                        </div>
-                      </div>
-                    </td>
-                    <td>One page html</td>
-                    <td>
-                      <div class="badge badge-inverse-danger"> Completed </div>
-                    </td>
-                    <td>$ 160.25</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <img src="{%static 'assets/images/faces/face13.jpg' %}" alt="image" />
-                        <div class="table-user-name ml-3">
-                          <p class="mb-0 font-weight-medium"> Dollie Lynch </p>
-                          <small>Email verified</small>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Wordpress</td>
-                    <td>
-                      <div class="badge badge-inverse-success"> Declined </div>
-                    </td>
-                    <td>$ 123.21</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <img src="{%static 'assets/images/faces/face16.jpg' %}" alt="image" />
-                        <div class="table-user-name ml-3">
-                          <p class="mb-0 font-weight-medium"> Harry Holloway </p>
-                          <small>Payment on process</small>
-                        </div>
-                      </div>
-                    </td>
-                    <td>VueJs Application</td>
-                    <td>
-                      <div class="badge badge-inverse-danger"> Declined </div>
-                    </td>
-                    <td>$ 150.00</td>
-                  </tr>
+                  {% endfor %}
+                  
                 </tbody>
               </table>
             </div>
             <a class="text-black mt-3 d-block pl-4" href="#">
-              <span class="font-weight-medium h6">View all order history</span>
+              <span class="font-weight-medium h6">View all Members</span>
               <i class="mdi mdi-chevron-right"></i></a>
           </div>
         </div>
@@ -134,16 +90,18 @@
         <div class="card card-invoice">
           <div class="card-body">
             <h4 class="card-title pb-3">New Members</h4>
+
+            {% for i  in Trainee %}
             <div class="list-card">
               <div class="row align-items-center">
                 <div class="col-7 col-sm-8">
                   <div class="row align-items-center">
                     <div class="col-sm-4">
-                      <img src="{%static 'assets/images/faces/face2.jpg' %}" alt="" />
+                      <img src="{{i.Photo.url}}" alt="" />
                     </div>
                     <div class="col-sm-8 pr-0 pl-sm-0">
-                      <span>06 Jan 2019</span>
-                      <h6 class="mb-1 mb-sm-0">Isabel Cross</h6>
+                      <span>{{i.Registration_Date}}</span>
+                      <h6 class="mb-1 mb-sm-0">{{i.First_Name}} {{i.Last_Name}}</h6>
                     </div>
                   </div>
                 </div>
@@ -158,114 +116,17 @@
                         <p><i class="mdi mdi-dots-vertical"></i></p>
                       </div>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                        <a class="dropdown-item" href="#">Sales</a>
-                        <a class="dropdown-item" href="#">Track Invoice</a>
-                        <a class="dropdown-item" href="#">Payment History</a>
+                        <a class="dropdown-item" href="{%url 'MembersSingleView' i.id %}">View Member</a>
+                        
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="list-card">
-              <div class="row align-items-center">
-                <div class="col-7 col-sm-8">
-                  <div class="row align-items-center">
-                    <div class="col-sm-4">
-                      <img src="{%static 'assets/images/faces/face3.jpg' %}" alt="" />
-                    </div>
-                    <div class="col-sm-8 pr-0 pl-sm-0">
-                      <span>18 Mar 2019</span>
-                      <h6 class="mb-1 mb-sm-0">Carrie Parker</h6>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-5 col-sm-4">
-                  <div class="d-flex pt-1 align-items-center">
-                    <div class="reload-outer bg-primary">
-                      <i class="mdi mdi-reload"></i>
-                    </div>
-                    <div class="dropdown dropleft pl-1 pt-3">
-                      <div id="dropdownMenuButton3" data-toggle="dropdown" role="button" aria-haspopup="true"
-                        aria-expanded="false">
-                        <p><i class="mdi mdi-dots-vertical"></i></p>
-                      </div>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                        <a class="dropdown-item" href="#">Sales</a>
-                        <a class="dropdown-item" href="#">Track Invoice</a>
-                        <a class="dropdown-item" href="#">Payment History</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="list-card">
-              <div class="row align-items-center">
-                <div class="col-7 col-sm-8">
-                  <div class="row align-items-center">
-                    <div class="col-sm-4">
-                      <img src="{%static 'assets/images/faces/face11.jpg' %}" alt="" />
-                    </div>
-                    <div class="col-sm-8 pr-0 pl-sm-0">
-                      <span>10 Apr 2019</span>
-                      <h6 class="mb-1 mb-sm-0">Don Bennett</h6>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-5 col-sm-4">
-                  <div class="d-flex pt-1 align-items-center">
-                    <div class="reload-outer bg-warning">
-                      <i class="mdi mdi-reload"></i>
-                    </div>
-                    <div class="dropdown dropleft pl-1 pt-3">
-                      <div id="dropdownMenuButton4" data-toggle="dropdown" role="button" aria-haspopup="true"
-                        aria-expanded="false">
-                        <p><i class="mdi mdi-dots-vertical"></i></p>
-                      </div>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                        <a class="dropdown-item" href="#">Sales</a>
-                        <a class="dropdown-item" href="#">Track Invoice</a>
-                        <a class="dropdown-item" href="#">Payment History</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="list-card">
-              <div class="row align-items-center">
-                <div class="col-7 col-sm-8">
-                  <div class="row align-items-center">
-                    <div class="col-sm-4">
-                      <img src="{%static 'assets/images/faces/face3.jpg' %}" alt="" />
-                    </div>
-                    <div class="col-sm-8 pr-0 pl-sm-0">
-                      <span>18 Mar 2019</span>
-                      <h6 class="mb-1 mb-sm-0">Carrie Parker</h6>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-5 col-sm-4">
-                  <div class="d-flex pt-1 align-items-center">
-                    <div class="reload-outer bg-info">
-                      <i class="mdi mdi-reload"></i>
-                    </div>
-                    <div class="dropdown dropleft pl-1 pt-3">
-                      <div id="dropdownMenuButton5" data-toggle="dropdown" role="button" aria-haspopup="true"
-                        aria-expanded="false">
-                        <p><i class="mdi mdi-dots-vertical"></i></p>
-                      </div>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
-                        <a class="dropdown-item" href="#">Sales</a>
-                        <a class="dropdown-item" href="#">Track Invoice</a>
-                        <a class="dropdown-item" href="#">Payment History</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {% endfor %}
+
+           
           </div>
         </div>
       </div>
@@ -645,7 +506,8 @@
               <div class="card">
                 <div class="card-body">
                   <!-- <h4 class="card-title">Horizontal Two column</h4> -->
-                  <form class="form-sample memberadd-form">
+                  <form class="form-sample memberadd-form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <p class="card-description">Personal Info</p>
                     <div class="row">
                       {% for field in form %}
@@ -674,15 +536,16 @@
                       {% endfor %}
                     </div>
 
-                  </form>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
           </div>
+        </form>
+
         </div>
       </div>
     </div>
