@@ -33,7 +33,7 @@ class MemberAddForm(ModelForm):
             "Registration_Date":TextInput(attrs={"class":"form-control","type":"date"}),
             # "Address":TextInput(attrs={"class":"form-control",'style': 'height: 3em !importent;'}),
             # "Medical_History":TextInput(attrs={"class":"form-control"}),
-            "Photo":FileInput(attrs={"class":"form-control"}),
+            "Photo":FileInput(attrs={"class":"form-control",'accept': 'image/*', 'capture':'camera'}),
             "Access_Token_Id":TextInput(attrs={"class":"form-control"})
 
         }
@@ -54,7 +54,7 @@ class SubscriptionAddForm(ModelForm):
             "Type_Of_Subscription":Select(attrs={"class":"form-control"}),
             "Period_Of_Subscription":Select(attrs={"class":"form-control"}),
             "Amount":TextInput(attrs={"class":"form-control","type":"number"}),
-            "Subscribed_Date":TextInput(attrs={"class":"form-control","type":"date","min":date}),
+            "Subscribed_Date":TextInput(attrs={"class":"form-control","type":"date"}),
             "Subscription_End_Date":TextInput(attrs={"class":"form-control","type":"date","min":date}),
             "Batch":Select(attrs={"class":"form-control"}),
 
@@ -97,7 +97,7 @@ class PaymentForm(ModelForm):
 
         widgets = {
             "Member":Select(attrs={"class":"form-control"}),
-            "Payment_Date":TextInput(attrs={"class":"form-control","type":"date","min":date}),
+            "Payment_Date":TextInput(attrs={"class":"form-control","type":"date"}),
         }
 
 

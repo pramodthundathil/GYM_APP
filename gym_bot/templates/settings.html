@@ -5,11 +5,12 @@
 </script>
 <div class="main-panel">
     <div class="content-wrapper">
+        
         <div class="page-header">
             <h3 class="page-title">Settings</h3>
             {% for message in messages  %}
               
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert {{message.tags}} alert-dismissible fade show" role="alert">
                 <strong>Hi! </strong> {{message}}
                 <button type="button" class="btn btn-close mdi mdi-close text-xxl" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
@@ -157,35 +158,21 @@
                 <div class="card" style="height: 500px !important;overflow:scroll">
                     <div class="card-body">
                         <div class="item" style="position: sticky; top:10px;background-color:white">
-                            <h4 class="card-title">Subscription Period</h4>
-                            <p class="card-description"><button class="btn btn-outline-primary" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">Add Subscription Period</button>
+                            <h4 class="card-title">Change Password</h4>
+                            <p class="card-description">
                             </p>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table">
-                                <thead>
-                                    <tr>
-                                        <th>SubScription Period</th>
-                                        
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for j in speriod %}
-                                      
-                                    <tr>
-                                        <td>{{j.Period}} {{j.Category}}</td>
-                                        <td>
-                                            <a href="{%url 'SubScriptionPeriod_Delete' j.id %}" class="btn btn-inverse-danger btn-icon"><i class="mdi mdi-delete"
-                                                style="font-size: 25px;"></i></a>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-
-                                  
-                                </tbody>
-                            </table>
+                            <form action="{%url 'ChangePassword' %}" method="post">
+                                {% csrf_token %}
+                                <label for="">Old Password</label>
+                                <input type="password" name="oldpassword" class="form-control"><br><br>
+                                <label for="">New Password</label>
+                                <input type="password" name="newpassword1" class="form-control"><br><br>
+                                <label for="">Confirm Password</label>
+                                <input type="password" name="newpassword2" class="form-control"><br><br>
+                                <button type="submit" class="btn btn-primary">Change Password</button>
+                            </form>
                         </div>
                     </div>
                 </div>

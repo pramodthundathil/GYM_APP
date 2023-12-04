@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
-from Members.models import Subscription_Period, Subscription, Batch_DB, TypeSubsription,MemberData,Payment
+from Members.models import Subscription_Period, Subscription, Batch_DB, TypeSubsription,MemberData,Payment, AccessToGate
 from Members.forms import Subscription_PeriodForm, BatchForm, TypeSubsriptionForm
 from datetime import datetime, timedelta
 from django.utils import timezone
@@ -18,7 +18,21 @@ def Home(request):
     month = datetime.now().strftime('%B')
     notification_payments = Payment.objects.filter(Payment_Date__gte = start_date,Payment_Date__lte = end_date )
 
-    
+    subscrib = Subscription.objects.filter(Subscription_End_Date__lte = end_date)
+    for i in subscrib:
+        i.Payment_Status = False
+        i.save()
+        # print("hrlloooooooooooo")
+        access = AccessToGate.objects.get(Subscription = i)
+        access.Status = False
+        access.save()
+
+    access = AccessToGate.objects.filter(Validity_Date__lte = end_date )
+
+    for i in access:
+        i.Status = False
+        i.save()
+
     collected_amount = 0
 
     payment = Payment.objects.filter(Payment_Date__month = this_month)
@@ -110,6 +124,27 @@ def SubScriptionType_Delete(request,pk):
     return redirect("Setting_Module")
 
 
+def ChangePassword(request):
+    if request.method == "POST":
+        oldpass = request.POST["oldpassword"]
+        newpass1 = request.POST['newpassword1']
+        newpass2 = request.POST['newpassword2']
+        user1 = authenticate(request,username = request.user.username,password = oldpass)
+        if user1 is not None:
+            if newpass1 == newpass2:
+                user  = request.user 
+                user.set_password(newpass1)
+                user.save()
+                messages.success(request, "Password Change Success Please Login To Continue..")
+                return redirect("SignIn")
+            else:
+                messages.error(request, "Password not Matching..")
+                return redirect("Setting_Module")
+        else:
+            messages.error(request, "Password is incorrect")
+            return redirect("Setting_Module")
+
+    return redirect("Setting_Module")
 
 
     
@@ -132,3 +167,18 @@ def SignIn(request):
 def SignOut(request):
     logout(request)
     return redirect(SignIn)
+
+def Search(request):
+    if request.method == "POST":
+        key = request.POST["key"]
+        members1 = MemberData.objects.filter(First_Name__contains = key)
+        members2 = MemberData.objects.filter(Last_Name__contains= key)
+        list(members1).extend(list(members2))
+        member = list(set(members1))
+        print(member)
+        context = {
+            "member":member
+        }
+        return render(request, "search.html",context)
+    return render(request, "search.html")
+    

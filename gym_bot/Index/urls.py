@@ -12,6 +12,8 @@ urlpatterns = [
     path("SubScriptionPeriod_Delete/<int:pk>",views.SubScriptionPeriod_Delete,name="SubScriptionPeriod_Delete"),  
     path("SubscriptionTypeSave",views.SubscriptionTypeSave,name="SubscriptionTypeSave"),
     path("SubScriptionType_Delete/<int:pk>",views.SubScriptionType_Delete,name="SubScriptionType_Delete"),  
-    
+    path("ChangePassword",views.ChangePassword,name="ChangePassword"),
+    path("Search",views.Search,name="Search"),
+
 
 ]

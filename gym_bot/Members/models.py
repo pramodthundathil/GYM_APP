@@ -44,7 +44,7 @@ class MemberData(models.Model):
     Access_Token_Id = models.CharField(max_length=255,null=True,blank=True)
 
     def __str__(self):
-        return self.First_Name + self.Last_Name
+        return self.First_Name +" "+self.Last_Name
 
 class Subscription(models.Model):
     Member = models.ForeignKey(MemberData, on_delete=models.CASCADE,null=True, blank=True)
@@ -68,6 +68,13 @@ class Payment(models.Model):
     Payment_Date = models.DateField(auto_now_add=False,null=True,blank=True)
     Payment_Status = models.BooleanField(default=False)
     Access_status = models.BooleanField(default=False)
+
+class AccessToGate(models.Model):
+    Member = models.ForeignKey(MemberData, on_delete=models.CASCADE)
+    Subscription = models.ForeignKey(Subscription, on_delete=models.SET_NULL, null=True, blank=True)
+    Validity_Date = models.DateField(auto_now_add=False)
+    Status = models.BooleanField(default=False)
+    Payment_status = models.BooleanField(default=False)
 
 
 

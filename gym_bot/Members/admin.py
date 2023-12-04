@@ -9,5 +9,7 @@ admin.site.register(MemberData)
 admin.site.register(Subscription_Period)
 admin.site.register(TypeSubsription)
 admin.site.register(Batch_DB)
+admin.site.register(AccessToGate)
+
 
 
